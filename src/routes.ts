@@ -1,6 +1,11 @@
-import { Express, Request, Response } from "express";
+import { Express, Request, Response, json } from "express";
+import { createUserHandler } from "./controller/user.controller";
 function routes(app: Express) {
+  app.use(json());
   app.get("/control", (req: Request, res: Response) => res.sendStatus(200));
+  app.post("/user", (req: Request, res: Response) =>
+    createUserHandler(req, res)
+  );
 }
 
 export default routes;
