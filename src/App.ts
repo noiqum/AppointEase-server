@@ -7,7 +7,7 @@ import connect from "./utils/connect";
 
 const app = express();
 const port = config.get<number>("port");
-
+app.use(express.json());
 app.listen(port, async () => {
   log.info("server is running");
   await connect();
