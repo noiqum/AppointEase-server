@@ -4,9 +4,8 @@ import { validatePassword } from "../service/user.service";
 import { signJwt } from "../utils/jwt.utils";
 
 export async function createSessionHandler(req: Request, res: Response) {
-  console.log("session body", req.body);
   const user = await validatePassword(req.body);
-  console.log("user", user);
+
   if (!user) {
     return res.status(401).send("Invalid username or password");
   }
