@@ -1,6 +1,7 @@
 import config from "config";
+import { Session } from "inspector";
 import { get } from "lodash";
-import { FilterQuery } from "mongoose";
+import { FilterQuery, UpdateQuery } from "mongoose";
 import SessionModal, { SessionDocument } from "../models/session.model";
 import { signJwt, verifyJwt } from "../utils/jwt.utils";
 import { findUser } from "./user.service";
@@ -36,4 +37,11 @@ export async function reIssueAccessToken({
   );
 
   return accessToken;
+}
+
+export async function updateSession(
+  query: FilterQuery<SessionDocument>,
+  update: UpdateQuery<SessionDocument>
+) {
+  return SessionModal.updateOne(query, update);
 }
