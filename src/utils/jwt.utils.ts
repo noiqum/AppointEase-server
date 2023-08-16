@@ -7,9 +7,6 @@ const publicKey = config.get("publicKey") as string;
 
 export function signJwt(object: Object, options?: jwt.SignOptions | undefined) {
   try {
-    console.log("ob", object);
-    console.log("pk", privateKey);
-    console.log("op", options);
     return jwt.sign(object, privateKey, options);
   } catch (error: any) {
     console.error("JWT Sign Error:", error.message);
