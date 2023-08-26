@@ -8,6 +8,7 @@ import { createUserHandler } from "./controller/user.controller";
 import requireUser from "./middleware/requireUser";
 
 function routes(app: Express) {
+  console.log("route");
   app.get("/control", (req: Request, res: Response) => res.sendStatus(200));
   app.post("/api/user", (req: Request, res: Response) =>
     createUserHandler(req, res)

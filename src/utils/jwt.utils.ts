@@ -1,9 +1,6 @@
 import jwt from "jsonwebtoken";
-import config from "config";
-import { string } from "zod";
 
-const privateKey = config.get("privateKey") as string;
-const publicKey = config.get("publicKey") as string;
+const privateKey = process.env.PRIVATE_KEY as string;
 
 export function signJwt(object: Object, options?: jwt.SignOptions | undefined) {
   try {

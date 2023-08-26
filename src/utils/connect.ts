@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import config from "config";
+
 import logger from "./logger";
 
 async function connect() {
-  const dbUri = config.get<string>("dbUri");
+  const dbUri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.apyij9i.mongodb.net/?retryWrites=true&w=majority`;
 
   try {
     await mongoose.connect(dbUri, { dbName: "pool" });
