@@ -11,3 +11,12 @@ export async function createUserHandler(req: Request, res: Response) {
     return res.status(409).send(error.message);
   }
 }
+
+export async function loginHandler(req: Request, res: Response) {
+  try {
+    return res.send("login handler");
+  } catch (error: any) {
+    logger.error(error);
+    return res.status(409).send(error.message);
+  }
+}

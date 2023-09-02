@@ -4,15 +4,17 @@ import {
   deleteSessionHandler,
   getUserSessionsHandler,
 } from "./controller/session.controller";
-import { createUserHandler } from "./controller/user.controller";
+import { createUserHandler, loginHandler } from "./controller/user.controller";
 import requireUser from "./middleware/requireUser";
 
 function routes(app: Express) {
-  console.log("route");
   app.get("/control", (req: Request, res: Response) => res.sendStatus(200));
-  app.post("/api/user", (req: Request, res: Response) =>
+  app.post("/api/user/register", (req: Request, res: Response) =>
     createUserHandler(req, res)
   );
+  app.post("/api/user/login", (req: Request, res: Response) => {
+    loginHandler(req, res);
+  });
   app.post("/api/sessions", (req: Request, res: Response) =>
     createSessionHandler(req, res)
   );
