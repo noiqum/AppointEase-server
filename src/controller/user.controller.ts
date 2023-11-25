@@ -94,7 +94,7 @@ export const refresh = async (req: Request, res: Response) => {
   );
 };
 
-const logout = (req:Request, res:Response) => {
+export const logout = (req:Request, res:Response) => {
   const cookies = req.cookies
   if (!cookies?.jwt) return res.sendStatus(204) //No content
   res.clearCookie('jwt', { httpOnly: true, sameSite: 'none', secure: true })
