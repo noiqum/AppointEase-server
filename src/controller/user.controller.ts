@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { createUser } from "../service/user.service";
 import { omit } from "lodash";
 import logger from "../utils/logger";
-import  jwt from "jsonwebtoken"
+import  jwt, { JwtPayload, VerifyErrors } from "jsonwebtoken"
 import UserModal from "../models/user.model";
 export async function createUserHandler(req: Request, res: Response) {
   try {
@@ -57,4 +57,46 @@ export async function loginHandler(req: Request, res: Response) {
     logger.error(error);
     return res.status(409).send(error.message);
   }
+}
+
+export const refresh = async (req: Request, res: Response) => {
+  const cookies = req.cookies;
+
+  if (!cookies?.jwt) return res.status(401).json({ message: 'Unauthorized' });
+
+  const refreshToken = cookies.jwt;
+
+  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET || '',
+    async (err:VerifyErrors | null,decoded:string | JwtPayload | undefined) => {
+      if (err) return res.status(403).json({ message: 'Forbidden' });
+
+      const decodedPayload = decoded as JwtPayload;
+
+      const foundUser = await UserModal.findOne({ email: decodedPayload.email }).exec();
+
+      if (!foundUser) return res.status(401).json({ message: 'Unauthorized' });
+
+      const accessToken = jwt.sign(
+        {
+          UserInfo: {
+            username: foundUser.name,
+            roles: foundUser.email,
+          },
+        },
+        process.env.ACCESS_TOKEN_SECRET || '',
+        { expiresIn: '1d' }
+      );
+
+      res.json({ accessToken });
+    }
+  );
+};
+
+const logout = (req:Request, res:Response) => {
+  const cookies = req.cookies
+  if (!cookies?.jwt) return res.sendStatus(204) //No content
+  res.clearCookie('jwt', { httpOnly: true, sameSite: 'none', secure: true })
+  res.json({ message: 'Cookie cleared' })
 }
