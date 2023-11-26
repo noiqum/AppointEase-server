@@ -1,7 +1,7 @@
 import jwt, { VerifyErrors, JwtPayload } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 
-const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
+export const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization || req.headers.Authorization as string;
 
   if (!authHeader?.includes('Bearer ')) {
@@ -36,4 +36,4 @@ const verifyJWT = (req: Request, res: Response, next: NextFunction) => {
   );
 };
 
-module.exports = verifyJWT;
+
