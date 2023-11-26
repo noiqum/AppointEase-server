@@ -1,6 +1,4 @@
-import { Express, Request, Response, json } from "express";
-
-import { createUserHandler, loginHandler } from "../controller/user.controller";
+import { Express, Request, Response } from "express";
 
 
 function routes(app: Express) {
