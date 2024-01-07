@@ -1,14 +1,17 @@
 import express from "express";
 const router = express.Router();
-import { loginHandler, logout } from "../controller/user.controller";
+import { loginHandler } from "../controller/user.controller";
 import { verifyJWT } from "../middleware/jwtVerify";
-import { createAppointmentHandler } from "../controller/appointment.controller";
+import {
+  createAppointmentHandler,
+  updateAppointmentHandler,
+} from "../controller/appointment.controller";
 
 router.use(verifyJWT);
 router.route("/create").post(createAppointmentHandler);
 
 router.route("/delete").post(loginHandler);
 
-router.route("/update").patch(logout);
+router.route("/update").patch(updateAppointmentHandler);
 
 module.exports = router;

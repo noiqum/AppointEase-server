@@ -5,6 +5,7 @@ export interface AppointmentDocument extends mongoose.Document {
     type: mongoose.Schema.Types.ObjectId;
     ref: "User";
   };
+  name: string;
   description: string;
   link: string;
   length: number;
@@ -35,6 +36,7 @@ export interface AppointmentDocument extends mongoose.Document {
 const appointmentSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    name: { type: String, required: true, trim: true },
     description: { type: String, required: true, trim: true },
     link: { type: String, required: true, trim: true },
     length: { type: Number, required: true },
