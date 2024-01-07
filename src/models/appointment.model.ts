@@ -1,28 +1,63 @@
 import mongoose from "mongoose";
 
 export interface AppointmentDocument extends mongoose.Document {
-  company: {
-    type: mongoose.Schema.Types.ObjectId;
-    ref: "Company";
-  };
   user: {
     type: mongoose.Schema.Types.ObjectId;
     ref: "User";
   };
-  message: string;
-  date: Date;
-  time: string;
+  description: string;
+  link: string;
+  length: number;
+  period: {
+    type: string;
+    enum: ["hour", "min"];
+  };
+  color: {
+    type: string;
+    enum: [
+      "#1e9bff",
+      "#2980b9",
+      "#0ed70a",
+      "#009432",
+      "#c40404",
+      "#ed4c67",
+      "#fa8a1a",
+      "#851eff",
+      "#d980fa",
+      "#f1c40f",
+      "#8a9199"
+    ];
+  };
   createdAt: Date;
   updatedAt: Date;
 }
 
 const appointmentSchema = new mongoose.Schema(
   {
-    company: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    message: { type: String, required: true, trim: true },
-    date: { type: Date, required: true },
-    time: { type: String, required: true, trim: true },
+    description: { type: String, required: true, trim: true },
+    link: { type: String, required: true, trim: true },
+    length: { type: Number, required: true },
+    period: {
+      type: String,
+      enum: ["hour", "min"],
+    },
+    color: {
+      type: String,
+      enum: [
+        "#1e9bff",
+        "#2980b9",
+        "#0ed70a",
+        "#009432",
+        "#c40404",
+        "#ed4c67",
+        "#fa8a1a",
+        "#851eff",
+        "#d980fa",
+        "#f1c40f",
+        "#8a9199",
+      ],
+    },
   },
   {
     timestamps: true,
