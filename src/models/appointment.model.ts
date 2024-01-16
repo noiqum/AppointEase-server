@@ -37,8 +37,8 @@ const appointmentSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     name: { type: String, required: true, trim: true },
-    description: { type: String, required: true, trim: true },
-    link: { type: String, required: true, trim: true },
+    description: { type: String, required: false, trim: true },
+    link: { type: String, required: false, trim: true },
     length: { type: Number, required: true },
     period: {
       type: String,
