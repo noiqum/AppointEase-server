@@ -6,6 +6,15 @@ import AppointmentModal from "../models/appointment.model";
 export async function createAppointmentHandler(req: Request, res: Response) {
   try {
     const appointment = await createAppointment(req.body);
+    const dublicate = await AppointmentModal.findOne({
+      name: appointment.name,
+      user: appointment.user,
+    });
+    if (dublicate) {
+      return res.status(409).send({
+        message: "Appointment name already exists",
+      });
+    }
     return res.status(200).send(appointment);
   } catch (error: any) {
     logger.error(error);
