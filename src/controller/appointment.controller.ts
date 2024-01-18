@@ -5,15 +5,20 @@ import AppointmentModal from "../models/appointment.model";
 
 export async function createAppointmentHandler(req: Request, res: Response) {
   try {
-    const appointment = await createAppointment(req.body);
-    const dublicate = await AppointmentModal.findOne({
-      name: appointment.name,
+    const appointments = await AppointmentModal.find({
+      user: req.body.user,
     });
-    if (dublicate && dublicate.user === req.body.user) {
-      return res.status(409).send({
-        message: "Appointment name already exists",
-      });
+    if (appointments.length > 0) {
+      const dublicate = appointments.find(
+        (appointment) => appointment.name === req.body.name
+      );
+      if (dublicate) {
+        return res.status(409).send({
+          message: "Appointment name already exists",
+        });
+      }
     }
+    const appointment = await createAppointment(req.body);
     return res.status(200).send(appointment);
   } catch (error: any) {
     logger.error(error);
@@ -40,3 +45,30 @@ export async function updateAppointmentHandler(req: Request, res: Response) {
     return res.status(500).send(error.message);
   }
 }
+
+export async function deleteAppointmentHandler(req: Request, res: Response) {
+  try {
+    const { id } = req.body;
+    const appointment = await AppointmentModal.findById(id).exec();
+    if (!appointment) {
+      return res.status(404).send("Appointment not found");
+    }
+    await AppointmentModal.deleteOne({ _id: id });
+    return res.status(200).send("Appointment deleted successfully");
+  } catch (error: any) {
+    logger.error(error);
+    return res.status(500).send(error.message);
+  }
+}
+
+export const getUserAppointments = async (req: Request, res: Response) => {
+  try {
+    const appointments = await AppointmentModal.find({
+      user: req.body.user,
+    });
+    return res.status(200).send(appointments);
+  } catch (error: any) {
+    logger.error(error);
+    return res.status(500).send(error.message);
+  }
+};
