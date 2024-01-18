@@ -8,9 +8,8 @@ export async function createAppointmentHandler(req: Request, res: Response) {
     const appointment = await createAppointment(req.body);
     const dublicate = await AppointmentModal.findOne({
       name: appointment.name,
-      user: appointment.user,
     });
-    if (dublicate) {
+    if (dublicate && dublicate.user === req.body.user) {
       return res.status(409).send({
         message: "Appointment name already exists",
       });
