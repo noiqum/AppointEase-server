@@ -63,9 +63,11 @@ export async function deleteAppointmentHandler(req: Request, res: Response) {
 
 export const getUserAppointments = async (req: Request, res: Response) => {
   try {
+    console.log("req.query.user", req.query.user);
     const appointments = await AppointmentModal.find({
-      user: req.body.user,
+      user: req.params.user,
     }).exec();
+    console.log("appointments", appointments);
     return res.status(200).send(appointments);
   } catch (error: any) {
     logger.error(error);
