@@ -65,7 +65,7 @@ export const getUserAppointments = async (req: Request, res: Response) => {
   try {
     const appointments = await AppointmentModal.find({
       user: req.body.user,
-    });
+    }).exec();
     return res.status(200).send(appointments);
   } catch (error: any) {
     logger.error(error);
